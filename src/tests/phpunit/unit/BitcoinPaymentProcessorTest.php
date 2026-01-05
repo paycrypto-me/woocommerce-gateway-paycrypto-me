@@ -61,6 +61,7 @@ class BitcoinPaymentProcessorTest extends TestCase
         $btcSvc = $this->createMock(\PayCryptoMe\WooCommerce\BitcoinAddressService::class);
         // ensure generate_address_from_xPub is not called
         $btcSvc->expects($this->never())->method('generate_address_from_xPub');
+        $btcSvc->method('validate_extended_pubkey')->willReturn(true);
         $btcSvc->method('build_bitcoin_payment_uri')->willReturn('bitcoin:1ExistingAddr?amount=0.123');
 
         $processor = $this->getMockBuilder(BitcoinPaymentProcessor::class)
@@ -98,16 +99,17 @@ class BitcoinPaymentProcessorTest extends TestCase
 
         $db = $this->createMock(\PayCryptoMe\WooCommerce\PayCryptoMeDBStatementsService::class);
         $db->method('get_by_order_id')->with(99)->willReturn(null);
+        $db->method('get_wallet_xpubkey_id')->willReturn(1);
         $db->method('insert_address')->with(
             $this->equalTo(99),
-            $this->equalTo('xpub_fake'),
-            $this->equalTo('mainnet'),
             $this->isType('int'),
-            $this->equalTo('1NewAddr')
+            $this->equalTo('1NewAddr'),
+            $this->equalTo(1)
         )->willReturn(true);
 
         $btcSvc = $this->createMock(\PayCryptoMe\WooCommerce\BitcoinAddressService::class);
         $btcSvc->method('generate_address_from_xPub')->with('xpub_fake', $this->isType('int'), $this->isInstanceOf(\BitWasp\Bitcoin\Network\NetworkInterface::class))->willReturn('1NewAddr');
+        $btcSvc->method('validate_extended_pubkey')->willReturn(true);
         $btcSvc->method('build_bitcoin_payment_uri')->willReturn('bitcoin:1NewAddr?amount=0.123');
 
         $processor = $this->getMockBuilder(BitcoinPaymentProcessor::class)

@@ -18,7 +18,7 @@ class PayCryptoMeBitcoinGatewayActivate
     public static function activate()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'paycrypto_me_bitcoin_transactions_data';
+
         $charset_collate = $wpdb->get_charset_collate();
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -36,14 +36,15 @@ class PayCryptoMeBitcoinGatewayActivate
 
         $indexes_table = $wpdb->prefix . 'paycrypto_me_bitcoin_derivation_indexes';
         $sql = "CREATE TABLE IF NOT EXISTS $indexes_table (
-            derivation_index BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            derivation_index BIGINT(20) UNSIGNED NOT NULL,
             wallet_xpubkeys_id BIGINT(20) UNSIGNED NOT NULL,
-            PRIMARY KEY (derivation_index),
+            PRIMARY KEY (derivation_index, wallet_xpubkeys_id),
             FOREIGN KEY (wallet_xpubkeys_id) REFERENCES {$wpdb->prefix}paycrypto_me_bitcoin_wallet_xpubkeys(id)
         ) $charset_collate;";
 
         dbDelta($sql);
 
+        $table_name = $wpdb->prefix . 'paycrypto_me_bitcoin_transactions_data';
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
             id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             order_id BIGINT(20) UNSIGNED NOT NULL,
@@ -52,13 +53,11 @@ class PayCryptoMeBitcoinGatewayActivate
             amount_received DECIMAL(16,8) NULL,
             tx_hash VARCHAR(255) NULL,
             derivation_index_id BIGINT(20) UNSIGNED NOT NULL,
+            wallet_xpubkeys_id BIGINT(20) UNSIGNED NOT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
-            UNIQUE KEY unique_order (order_id),
-            UNIQUE KEY unique_payment_address (payment_address),
-            UNIQUE KEY unique_derivation_index (derivation_index_id),
-            FOREIGN KEY (derivation_index_id) REFERENCES {$wpdb->prefix}paycrypto_me_bitcoin_derivation_indexes(derivation_index)
+            UNIQUE KEY unique_order (order_id)
         ) $charset_collate;";
 
         dbDelta($sql);

@@ -63,6 +63,22 @@ class PaymentProcessor
         }
     }
 
+    public function process_refund($order_id, $amount = null, $reason = '', \WC_Payment_Gateway $gateway): bool
+    {
+        // Currently, refunds are not supported for cryptocurrency payments.
+        $gateway->register_paycrypto_me_log(
+            \sprintf(
+                __('Refund requested for order #%s: amount %s, reason: %s. Refunds are not supported for cryptocurrency payments.', 'woocommerce-gateway-paycrypto-me'),
+                $order_id,
+                $amount !== null ? wc_price($amount) : 'Full amount',
+                $reason ?: 'No reason provided'
+            ),
+            'warning'
+        );
+
+        return false;
+    }
+
     private function trigger_hook_before(\WC_Order $order, array $payment_data, \WC_Payment_Gateway $gateway)
     {
         do_action('paycrypto_me_before_payment', $order, $gateway, $payment_data);
@@ -79,14 +95,14 @@ class PaymentProcessor
 
         $meta_data = [
             'crypto_currency' => $payment_data['crypto_currency'] ?? 'N-A',
-            'crypto_network' => $payment_data['crypto_network'] ?? 'N-A',
             'crypto_amount' => $payment_data['crypto_amount'] ?? 'N-A',
-            'fiat_amount' => $payment_data['fiat_amount'] ?? 'N-A',
             'fiat_currency' => $payment_data['fiat_currency'] ?? 'N-A',
+            'fiat_amount' => $payment_data['fiat_amount'] ?? 'N-A',
+            'payment_address' => $payment_data['payment_address'] ?? 'N-A',
         ];
 
         $gateway->register_paycrypto_me_log(
-            \sprintf(__('Payment processed successfully for order #%s %s', 'woocommerce-gateway-paycrypto-me'), $order_id, json_encode($meta_data)),
+            \sprintf(__('Payment process initiated for order #%s: %s', 'woocommerce-gateway-paycrypto-me'), $order_id, json_encode($meta_data)),
             'info'
         );
     }

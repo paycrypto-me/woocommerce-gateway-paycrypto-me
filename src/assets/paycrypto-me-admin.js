@@ -38,4 +38,34 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    var resetBtn = document.getElementById('paycrypto-me-reset-derivation-index');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+            if (confirm('Are you sure you want to reset the payment address derivation index? This action cannot be undone.')) {
+                fetch(window.PayCryptoMeAdminData.ajax_url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body: new URLSearchParams({
+                        action: 'paycrypto_me_reset_derivation_index',
+                        security: window.PayCryptoMeAdminData.nonce
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Derivation index has been reset successfully.');
+                        } else {
+                            alert('Error: ' + data.data);
+                        }
+                    })
+                    .catch(error => {
+                        alert('An unexpected error occurred.');
+                        console.error('Error:', error);
+                    });
+            }
+        });
+    }
 });

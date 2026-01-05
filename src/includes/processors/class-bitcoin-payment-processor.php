@@ -56,17 +56,22 @@ class BitcoinPaymentProcessor extends AbstractPaymentProcessor
                 $derivation_index = $existing['derivation_index'];
             } else {
 
-                $derivation_index = $this->db->insert_derivation_index($xPub, $network);
+                if (!$wallet_xpub_id = $this->db->get_wallet_xpubkey_id($xPub, $network)) {
+                    $wallet_xpub_id = $this->db->insert_wallet_xpubkey($xPub, $network);
+                }
 
-                if ($derivation_index === false) {
+                if (!$wallet_xpub_id) {
                     throw new PayCryptoMeException(
-                        \sprintf(__('Failed to generate derivation index for order #%s', 'woocommerce-gateway-paycrypto-me'), $order->get_id())
+                        \sprintf(__('Failed to persist wallet xPub for order #%s', 'woocommerce-gateway-paycrypto-me'), $order->get_id())
                     );
                 }
 
+                $derivation_index = (int) $this->db->reserve_derivation_index_for_wallet((int) $wallet_xpub_id);
+
                 $payment_address = $this->bitcoin_address_service->generate_address_from_xPub($xPub, $derivation_index, $bitcoin_network);
 
-                $inserted = $this->db->insert_address((int) $order->get_id(), $xPub, $network, $derivation_index, $payment_address);
+                $inserted = $this->db->insert_address((int) $order->get_id(), $derivation_index, $payment_address, $wallet_xpub_id);
+
                 if ($inserted === false) {
                     $this->gateway->register_paycrypto_me_log(
                         \sprintf(__('Failed to persist generated address for order #%s', 'woocommerce-gateway-paycrypto-me'), $order->get_id()),
@@ -100,10 +105,5 @@ class BitcoinPaymentProcessor extends AbstractPaymentProcessor
         }
 
         return $payment_data;
-    }
-
-    public function process_refund($order, $amount, $reason, $gateway): bool
-    {
-        //TODO: Implement refund process
     }
 }

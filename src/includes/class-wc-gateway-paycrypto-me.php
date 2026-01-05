@@ -14,8 +14,6 @@ namespace PayCryptoMe\WooCommerce;
 
 \defined('ABSPATH') || exit;
 
-use BitWasp\Bitcoin\Key\Factory\HierarchicalKeyFactory;
-use BitWasp\Bitcoin\Address\AddressCreator;
 use BitWasp\Bitcoin\Network\NetworkFactory;
 
 class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
@@ -27,6 +25,7 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
     protected $payment_number_confirmations;
     private BitcoinAddressService $bitcoin_address_service;
     private QrCodeService $qr_code_service;
+    private PayCryptoMeDBStatementsService $db_statements_service;
     private $support_btc_address = 'bc1qgvc07956sxuudk3jku6n03q5vc9tkrvkcar7uw';
     private $support_btc_payment_address = 'PM8TJdrkRoSqkCWmJwUMojQCG1rEXsuCTQ4GG7Gub7SSMYxaBx7pngJjhV8GUeXbaJujy8oq5ybpazVpNdotFftDX7f7UceYodNGmffUUiS5NZFu4wq4';
 
@@ -44,6 +43,7 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
 
         $this->bitcoin_address_service = new BitcoinAddressService();
         $this->qr_code_service = new QrCodeService();
+        $this->db_statements_service = new PayCryptoMeDBStatementsService();
 
         $this->init_form_fields();
         $this->init_settings();
@@ -64,11 +64,30 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
 
         do_action('woocommerce_paycrypto_me_gateway_loaded', $this);
         add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
+
+        add_action('wp_ajax_paycrypto_me_reset_derivation_index', array($this, 'ajax_reset_derivation_index'));
+    }
+
+    public function ajax_reset_derivation_index()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(__('Permission denied', 'woocommerce-gateway-paycrypto-me'), 403);
+        }
+
+        check_ajax_referer('paycrypto_me_nonce', 'security');
+
+        $this->db_statements_service->reset_derivation_indexes();
+
+        $this->register_paycrypto_me_log(
+            __('Derivation indexes have been reset via admin panel.', 'woocommerce-gateway-paycrypto-me'),
+            'warning'
+        );
+
+        wp_send_json_success(__('Reset request received', 'woocommerce-gateway-paycrypto-me'));
     }
 
     public function process_admin_options()
     {
-        // Validação de nonce para segurança CSRF
         if (isset($_POST['paycrypto_me_nonce'])) {
             if (!wp_verify_nonce($_POST['paycrypto_me_nonce'], 'paycrypto_me_settings')) {
                 wp_die(__('Security check failed', 'woocommerce-gateway-paycrypto-me'));
@@ -231,6 +250,17 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
                 'default' => 'yes',
                 'description' => __('Debug logs will be saved to WooCommerce > Status > Logs.', 'woocommerce-gateway-paycrypto-me'),
             ),
+            'paycrypto_danger_area' => array(
+                'type' => 'title',
+                'title' => __('Danger Area', 'woocommerce-gateway-paycrypto-me'),
+                'description' => '
+                <div class="paycrypto-danger-box">
+                    <strong>Warning:</strong> ' . __('Resetting the payment derivation index will lead to the reuse of addresses and loss of past data. Proceed with caution and ensure you understand the implications.', 'woocommerce-gateway-paycrypto-me') . '
+                    <br>
+                    <button type="button" id="paycrypto-me-reset-derivation-index" class="button paycrypto-danger-btn" style="margin-top: 8px;">Reset payment address derivation index</button>
+                </div>
+                ',
+            ),
             'paycrypto_me_donate' => array(
                 'type' => 'title',
                 'title' => __('Support the development!', 'woocommerce-gateway-paycrypto-me'),
@@ -368,7 +398,9 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
                 'paycrypto-me-admin',
                 'PayCryptoMeAdminData',
                 array(
-                    'networks' => $this->get_available_networks()
+                    'networks' => $this->get_available_networks(),
+                    'ajax_url' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('paycrypto_me_nonce'),
                 )
             );
         }
@@ -416,7 +448,7 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
 
     public function process_refund($order_id, $amount = null, $reason = '')
     {
-        //TODO: Implement refund process
+        return PaymentProcessor::instance()->process_refund($order_id, $amount, $reason, $this);
     }
 
     public function enqueue_checkout_styles()
@@ -475,10 +507,20 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
 
     private function validate_network_identifier($network_type, $identifier)
     {
-        if ($ok = $network_type === 'lightning' && is_email($identifier)) {
-            return $ok;
-        } else if ($ok = $network_type !== 'lightning' && $this->validate_xpub_address($network_type, $identifier)) {
-            return $ok;
+        if ($network_type === 'lightning' && is_email($identifier)) {
+            return true;
+        }
+
+        if ($network_type !== 'lightning') {
+            $network = $network_type === 'testnet' ? NetworkFactory::bitcoinTestnet() : NetworkFactory::bitcoin();
+
+            if ($this->validate_xpub_address($network_type, $identifier)) {
+                return true;
+            }
+
+            if ($this->bitcoin_address_service->validate_bitcoin_address($identifier, $network)) {
+                return true;
+            }
         }
 
         $this->register_paycrypto_me_log(

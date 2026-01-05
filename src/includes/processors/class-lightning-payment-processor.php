@@ -18,19 +18,6 @@ class LightningPaymentProcessor extends AbstractPaymentProcessor
 {
     public function process(\WC_Order $order, array $payment_data): array
     {
-        $identifier = $this->gateway->get_option('network_identifier');
-
-        if (empty($identifier)) {
-            throw new PayCryptoMeException(__('Lightning identifier is not configured in the payment gateway settings.', 'woocommerce-gateway-paycrypto-me'));
-        }
-
-        //TODO: implement generate lightning invoice based on identifier and order details
-
-        return $payment_data;
-    }
-
-    public function process_refund($order, $amount, $reason, $gateway): bool
-    {
-        //TODO: Implement refund process
+        throw new PayCryptoMeException(__('Lightning Network payments are not yet implemented.', 'woocommerce-gateway-paycrypto-me'));
     }
 }

@@ -12,3 +12,17 @@ require_once $autoload;
 if (!defined('ABSPATH')) {
     define('ABSPATH', __DIR__ . '/..');
 }
+
+// Minimal WP helper fallbacks used across tests
+if (!function_exists('esc_html')) {
+    function esc_html($text) { return $text; }
+}
+
+if (!function_exists('esc_html__')) {
+    function esc_html__($text, $domain = null) { return $text; }
+}
+
+if (!defined('ARRAY_A')) {
+    define('ARRAY_A', 'ARRAY_A');
+}
+

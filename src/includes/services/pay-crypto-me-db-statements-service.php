@@ -39,7 +39,7 @@ class PayCryptoMeDBStatementsService
 		$sql = $wpdb->prepare(
 			"SELECT t.*, i.derivation_index AS derivation_index, w.xpub AS xpub, w.network AS network
 			FROM {$this->table_name} t
-			INNER JOIN {$this->indexes_table} i ON t.derivation_index_id = i.derivation_index
+			INNER JOIN {$this->indexes_table} i ON t.derivation_index_id = i.derivation_index AND t.wallet_xpubkeys_id = i.wallet_xpubkeys_id
 			INNER JOIN {$this->wallet_xpubkeys_table} w ON i.wallet_xpubkeys_id = w.id
 			WHERE t.order_id = %d
 			LIMIT 1",
@@ -88,32 +88,51 @@ class PayCryptoMeDBStatementsService
 		return (int) $wpdb->insert_id;
 	}
 
-	public function insert_derivation_index(string $xpub, string $network): int|false
+	public function reserve_derivation_index_for_wallet(int $wallet_xpubkeys_id, int $lock_timeout = 10)
 	{
 		global $wpdb;
 
-		if (!$inserted_wallet_xpub_id = $this->get_wallet_xpubkey_id($xpub, $network)) {
-			$inserted_wallet_xpub_id = $this->insert_wallet_xpubkey($xpub, $network);
+		$lock_name = 'paycrypto_wallet_' . (int) $wallet_xpubkeys_id;
+
+		$got = $wpdb->get_var($wpdb->prepare("SELECT GET_LOCK(%s, %d)", $lock_name, $lock_timeout));
+
+		if ((int) $got !== 1) {
+			throw new \RuntimeException('Could not obtain DB lock for wallet.');
 		}
 
-		if (!$inserted_wallet_xpub_id) {
-			return false;
+		try {
+			$table = $wpdb->prefix . 'paycrypto_me_bitcoin_derivation_indexes';
+
+			$max = $wpdb->get_var($wpdb->prepare(
+				"SELECT MAX(derivation_index) FROM {$table} WHERE wallet_xpubkeys_id = %d",
+				$wallet_xpubkeys_id
+			));
+
+			$next = ($max === null) ? 0 : ((int) $max + 1);
+
+			$inserted = $wpdb->insert(
+				$table,
+				[
+					'derivation_index' => $next,
+					'wallet_xpubkeys_id' => $wallet_xpubkeys_id,
+				],
+				[
+					'%d',
+					'%d',
+				]
+			);
+
+			if ($inserted === false) {
+				throw new \RuntimeException('Failed to insert derivation index.');
+			}
+
+			return $next;
+		} finally {
+			$wpdb->get_var($wpdb->prepare("SELECT RELEASE_LOCK(%s)", $lock_name));
 		}
-
-		$inserted = $wpdb->insert(
-			$this->indexes_table,
-			['wallet_xpubkeys_id' => $inserted_wallet_xpub_id],
-			['%d']
-		);
-
-		if ($inserted === false) {
-			return false;
-		}
-
-		return (int) $wpdb->insert_id;
 	}
 
-	public function insert_address(int $order_id, string $xpub, string $network, int $derivation_index, string $payment_address): bool
+	public function insert_address(int $order_id, int $derivation_index, string $payment_address, int $wallet_xpub_id): bool
 	{
 		global $wpdb;
 
@@ -127,10 +146,20 @@ class PayCryptoMeDBStatementsService
 				'order_id' => $order_id,
 				'payment_address' => $payment_address,
 				'derivation_index_id' => $derivation_index,
+				'wallet_xpubkeys_id' => $wallet_xpub_id,
 			],
-			['%d', '%s', '%d']
+			['%d', '%s', '%d', '%d']
 		);
 
 		return $inserted !== false;
+	}
+
+	public function reset_derivation_indexes(): bool
+	{
+		global $wpdb;
+
+		$result = $wpdb->query("TRUNCATE TABLE {$this->indexes_table}");
+
+		return $result !== false;
 	}
 }

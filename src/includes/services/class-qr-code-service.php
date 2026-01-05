@@ -30,7 +30,7 @@ class QrCodeService
 
         if ($logo_src) {
             $result = $result->logoPath($logo_src)
-                ->logoResizeToWidth(70);
+                ->logoResizeToWidth(60);
         }
 
         $result = $result->errorCorrectionLevel(new ErrorCorrectionLevelLow())
