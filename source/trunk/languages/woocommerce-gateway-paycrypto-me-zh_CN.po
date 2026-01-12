@@ -1,0 +1,267 @@
+# Copyright (C) 2026 PayCrypto.Me
+# This file is distributed under the GNU General Public License v3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: PayCrypto.Me for WooCommerce 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/paycrypto-me/woocommerce-gateway-"
+"paycrypto-me/issues\n"
+"POT-Creation-Date: 2026-01-12T22:42:43+00:00\n"
+"PO-Revision-Date: 2026-01-12T22:42:43+00:00\n"
+"Last-Translator: PayCrypto.Me <support@paycrypto.me>\n"
+"Language-Team: PayCrypto.Me Team <support@paycrypto.me>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: woocommerce-gateway-paycrypto-me\n"
+
+#. Plugin Name of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "PayCrypto.Me for WooCommerce"
+msgstr "PayCrypto.Me 适用于 WooCommerce"
+
+#. Plugin URI of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "https://github.com/paycrypto-me/woocommerce-gateway-paycrypto-me/"
+msgstr "https://github.com/paycrypto-me/woocommerce-gateway-paycrypto-me/"
+
+#. Description of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid ""
+"PayCrypto.Me Payments for WooCommerce introduces a complete solution that "
+"allows your customers to pay with BTC, ETH, SOL, and many other "
+"cryptocurrencies in your WooCommerce store."
+msgstr "PayCrypto.Me Payments 为 WooCommerce 提供了一套完整的解决方案，允许您的客户使用 BTC、ETH、SOL 和许多其他加密货币在您的 WooCommerce 商店中付款。"
+
+#. Author of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "PayCrypto.Me"
+msgstr "PayCrypto.Me"
+
+#. Author URI of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "https://paycrypto.me/"
+msgstr "https://paycrypto.me/"
+
+#: includes/blocks/class-wc-gateway-paycrypto-me-blocks.php:72
+#: includes/blocks/class-wc-gateway-paycrypto-me-blocks.php:83
+#: includes/class-wc-gateway-paycrypto-me.php:52
+msgid ""
+"Use directly your Bitcoin wallet to pay. Place the order to view the QR code "
+"and payment instructions."
+msgstr "直接使用您的比特币钱包付款。下订单以查看二维码和付款说明。"
+
+#: includes/class-payment-processor.php:102
+msgid ""
+"PayCrypto.Me payment initiated. Awaiting cryptocurrency payment confirmation."
+msgstr "PayCrypto.Me 付款已启动。正在等待加密货币付款确认。"
+
+#: includes/class-payment-processor.php:104
+msgid "Awaiting cryptocurrency payment"
+msgstr "等待加密货币付款"
+
+#: includes/class-payment-processor.php:140
+msgid ""
+"Selected payment method cannot be processed. Please try choosing another one."
+msgstr "所选付款方式无法处理。请尝试选择其他方式。"
+
+#: includes/class-payment-processor.php:152
+msgid ""
+"Selected payment method is not supported. Please try choosing another one."
+msgstr "所选付款方式不受支持。请尝试选择其他方式。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:42
+msgctxt "Gateway description"
+msgid ""
+"PayCrypto.Me (Bitcoin) introduces a complete solution to receive your "
+"payments directly to your Bitcoin wallet (Non-custodial)."
+msgstr "PayCrypto.Me (比特币) 提供了一套完整的解决方案，可将您的付款直接接收到您的比特币钱包（非托管）。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:51
+#: includes/class-wc-gateway-paycrypto-me.php:196
+msgid "Pay with Bitcoin"
+msgstr "使用比特币支付"
+
+#: includes/class-wc-gateway-paycrypto-me.php:74
+msgid "Permission denied."
+msgstr "权限被拒绝。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:83
+msgid "Reset request received."
+msgstr "已收到重置请求。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:90
+#: includes/class-wc-gateway-paycrypto-me.php:93
+msgid "Security check failed"
+msgstr "安全检查失败"
+
+#: includes/class-wc-gateway-paycrypto-me.php:102
+#, php-format
+msgid "Please enter a valid %s."
+msgstr "请输入有效的 %s。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:109
+#, php-format
+msgid "The %s provided is not valid for the selected network."
+msgstr "所提供的 %s 对于所选网络无效。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:126
+msgid "Wallet xPub"
+msgstr "钱包 xPub"
+
+#: includes/class-wc-gateway-paycrypto-me.php:135
+msgid "Testnet Wallet xPub"
+msgstr "测试网钱包 xPub"
+
+#: includes/class-wc-gateway-paycrypto-me.php:144
+msgid "Lightning Address"
+msgstr "闪电地址"
+
+#: includes/class-wc-gateway-paycrypto-me.php:187
+msgid "Enable/Disable"
+msgstr "启用/禁用"
+
+#: includes/class-wc-gateway-paycrypto-me.php:188
+msgid "Enable PayCrypto.Me."
+msgstr "启用 PayCrypto.Me。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:193
+msgid "Title"
+msgstr "标题"
+
+#: includes/class-wc-gateway-paycrypto-me.php:195
+msgid "Payment method name displayed on Checkout page."
+msgstr "结账页面上显示的付款方式名称。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:199
+msgid "Description"
+msgstr "描述"
+
+#: includes/class-wc-gateway-paycrypto-me.php:201
+msgid "Payment method description displayed on Checkout page."
+msgstr "结账页面上显示的付款方式描述。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:202
+msgid ""
+"Pay directly from your Bitcoin wallet. Place your order to view the QR code "
+"and payment instructions."
+msgstr "直接从您的比特币钱包付款。下订单以查看二维码和付款说明。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:206
+msgid "Network"
+msgstr "网络"
+
+#: includes/class-wc-gateway-paycrypto-me.php:209
+msgid "Select the network for payments."
+msgstr "选择付款网络。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:215
+msgid "Network Identifier"
+msgstr "网络标识符"
+
+#: includes/class-wc-gateway-paycrypto-me.php:219
+msgid ""
+"Tip: It is always preferable to use the wallet xPub rather than a wallet "
+"address for Bitcoin payments."
+msgstr "提示：对于比特币付款，最好使用钱包 xPub 而不是钱包地址。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:223
+msgid "Payment Timeout (hours)"
+msgstr "付款超时（小时）"
+
+#: includes/class-wc-gateway-paycrypto-me.php:225
+msgid ""
+"Max time (in hours) to wait to confirm payment before the order expires."
+msgstr "订单过期前等待确认付款的最长时间（以小时为单位）。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:230
+msgid "Payment number of confirmations"
+msgstr "付款确认次数"
+
+#: includes/class-wc-gateway-paycrypto-me.php:232
+msgid ""
+"Tip: To ensure the Bitcoin payment has been made, recommended wait for 3 "
+"confirmations."
+msgstr "提示：为确保比特币付款已完成，建议等待 3 次确认。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:237
+msgid "Hide for Non-Admin Users"
+msgstr "对非管理员用户隐藏"
+
+#: includes/class-wc-gateway-paycrypto-me.php:238
+msgid "Show only for administrators."
+msgstr "仅对管理员显示。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:241
+msgid ""
+"If enabled, only administrators will see the payment method on Checkout page."
+msgstr "如果启用，只有管理员才能在结账页面上看到付款方式。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:244
+msgid "Debug"
+msgstr "调试"
+
+#: includes/class-wc-gateway-paycrypto-me.php:245
+msgid "Enable debugging messages"
+msgstr "启用调试消息"
+
+#: includes/class-wc-gateway-paycrypto-me.php:248
+msgid "Debug logs will be saved to WooCommerce > Status > Logs."
+msgstr "调试日志将保存到 WooCommerce > 状态 > 日志。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:252
+msgid "Danger Area"
+msgstr "危险区域"
+
+#: includes/class-wc-gateway-paycrypto-me.php:255
+msgid ""
+"Resetting the payment derivation index will lead to the reuse of addresses "
+"and loss of past data. Proceed with caution and ensure you understand the "
+"implications."
+msgstr "重置付款派生索引将导致地址重复使用和过去数据丢失。请谨慎操作并确保您了解其影响。"
+
+#: includes/class-wc-gateway-paycrypto-me.php:263
+msgid "Support the development!"
+msgstr "支持开发！"
+
+#: includes/class-wc-gateway-paycrypto-me.php:321
+msgid "On-Chain"
+msgstr "链上"
+
+#: includes/processors/class-bitcoin-payment-processor.php:87
+#, php-format
+msgid "Payment sent to %1$s, Order Reference #%2$s"
+msgstr "付款已发送到 %1$s，订单参考 #%2$s"
+
+#: templates/order-details/paycrypto-me-order-details.php:8
+msgid "Payment Details"
+msgstr "付款详情"
+
+#: templates/order-details/paycrypto-me-order-details.php:12
+msgid "Fiat Amount:"
+msgstr "法币金额："
+
+#: templates/order-details/paycrypto-me-order-details.php:20
+msgid "Crypto Amount:"
+msgstr "加密货币金额："
+
+#: templates/order-details/paycrypto-me-order-details.php:29
+msgid "Crypto Network:"
+msgstr "加密货币网络："
+
+#: templates/order-details/paycrypto-me-order-details.php:41
+msgid "Scan QR Code to Pay:"
+msgstr "扫描二维码付款："
+
+#: templates/order-details/paycrypto-me-order-details.php:45
+msgid "QR Code for Payment"
+msgstr "付款二维码"
+
+#: templates/order-details/paycrypto-me-order-details.php:53
+msgid "Payment address copied to clipboard."
+msgstr "付款地址已复制到剪贴板。"
+
+#: templates/order-details/paycrypto-me-order-details.php:63
+msgid "open your wallet app"
+msgstr "打开您的钱包应用"

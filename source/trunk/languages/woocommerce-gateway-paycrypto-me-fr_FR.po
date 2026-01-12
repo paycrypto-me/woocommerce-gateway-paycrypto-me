@@ -1,0 +1,267 @@
+# Copyright (C) 2026 PayCrypto.Me
+# This file is distributed under the GNU General Public License v3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: PayCrypto.Me for WooCommerce 0.1.0\n"
+"Report-Msgid-Bugs-To: https://github.com/paycrypto-me/woocommerce-gateway-"
+"paycrypto-me/issues\n"
+"POT-Creation-Date: 2026-01-12T22:42:43+00:00\n"
+"PO-Revision-Date: 2026-01-12T22:42:43+00:00\n"
+"Last-Translator: PayCrypto.Me <support@paycrypto.me>\n"
+"Language-Team: PayCrypto.Me Team <support@paycrypto.me>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: woocommerce-gateway-paycrypto-me\n"
+
+#. Plugin Name of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "PayCrypto.Me for WooCommerce"
+msgstr "PayCrypto.Me pour WooCommerce"
+
+#. Plugin URI of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "https://github.com/paycrypto-me/woocommerce-gateway-paycrypto-me/"
+msgstr "https://github.com/paycrypto-me/woocommerce-gateway-paycrypto-me/"
+
+#. Description of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid ""
+"PayCrypto.Me Payments for WooCommerce introduces a complete solution that "
+"allows your customers to pay with BTC, ETH, SOL, and many other "
+"cryptocurrencies in your WooCommerce store."
+msgstr "PayCrypto.Me Payments pour WooCommerce propose une solution complète permettant à vos clients de payer avec BTC, ETH, SOL et de nombreuses autres cryptomonnaies dans votre boutique WooCommerce."
+
+#. Author of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "PayCrypto.Me"
+msgstr "PayCrypto.Me"
+
+#. Author URI of the plugin
+#: woocommerce-gateway-paycrypto-me.php
+msgid "https://paycrypto.me/"
+msgstr "https://paycrypto.me/"
+
+#: includes/blocks/class-wc-gateway-paycrypto-me-blocks.php:72
+#: includes/blocks/class-wc-gateway-paycrypto-me-blocks.php:83
+#: includes/class-wc-gateway-paycrypto-me.php:52
+msgid ""
+"Use directly your Bitcoin wallet to pay. Place the order to view the QR code "
+"and payment instructions."
+msgstr "Utilisez directement votre portefeuille Bitcoin pour payer. Passez la commande pour voir le code QR et les instructions de paiement."
+
+#: includes/class-payment-processor.php:102
+msgid ""
+"PayCrypto.Me payment initiated. Awaiting cryptocurrency payment confirmation."
+msgstr "Paiement PayCrypto.Me initié. En attente de confirmation du paiement en cryptomonnaie."
+
+#: includes/class-payment-processor.php:104
+msgid "Awaiting cryptocurrency payment"
+msgstr "En attente du paiement en cryptomonnaie"
+
+#: includes/class-payment-processor.php:140
+msgid ""
+"Selected payment method cannot be processed. Please try choosing another one."
+msgstr "Le mode de paiement sélectionné ne peut pas être traité. Veuillez essayer un autre."
+
+#: includes/class-payment-processor.php:152
+msgid ""
+"Selected payment method is not supported. Please try choosing another one."
+msgstr "Le mode de paiement sélectionné n'est pas pris en charge. Veuillez essayer un autre."
+
+#: includes/class-wc-gateway-paycrypto-me.php:42
+msgctxt "Gateway description"
+msgid ""
+"PayCrypto.Me (Bitcoin) introduces a complete solution to receive your "
+"payments directly to your Bitcoin wallet (Non-custodial)."
+msgstr "PayCrypto.Me (Bitcoin) propose une solution complète pour recevoir vos paiements directement dans votre portefeuille Bitcoin (non dépositaire)."
+
+#: includes/class-wc-gateway-paycrypto-me.php:51
+#: includes/class-wc-gateway-paycrypto-me.php:196
+msgid "Pay with Bitcoin"
+msgstr "Payer avec Bitcoin"
+
+#: includes/class-wc-gateway-paycrypto-me.php:74
+msgid "Permission denied."
+msgstr "Permission refusée."
+
+#: includes/class-wc-gateway-paycrypto-me.php:83
+msgid "Reset request received."
+msgstr "Demande de réinitialisation reçue."
+
+#: includes/class-wc-gateway-paycrypto-me.php:90
+#: includes/class-wc-gateway-paycrypto-me.php:93
+msgid "Security check failed"
+msgstr "Échec de la vérification de sécurité"
+
+#: includes/class-wc-gateway-paycrypto-me.php:102
+#, php-format
+msgid "Please enter a valid %s."
+msgstr "Veuillez entrer un(e) %s valide."
+
+#: includes/class-wc-gateway-paycrypto-me.php:109
+#, php-format
+msgid "The %s provided is not valid for the selected network."
+msgstr "Le %s fourni n'est pas valide pour le réseau sélectionné."
+
+#: includes/class-wc-gateway-paycrypto-me.php:126
+msgid "Wallet xPub"
+msgstr "Portefeuille xPub"
+
+#: includes/class-wc-gateway-paycrypto-me.php:135
+msgid "Testnet Wallet xPub"
+msgstr "Portefeuille xPub Testnet"
+
+#: includes/class-wc-gateway-paycrypto-me.php:144
+msgid "Lightning Address"
+msgstr "Adresse Lightning"
+
+#: includes/class-wc-gateway-paycrypto-me.php:187
+msgid "Enable/Disable"
+msgstr "Activer/Désactiver"
+
+#: includes/class-wc-gateway-paycrypto-me.php:188
+msgid "Enable PayCrypto.Me."
+msgstr "Activer PayCrypto.Me."
+
+#: includes/class-wc-gateway-paycrypto-me.php:193
+msgid "Title"
+msgstr "Titre"
+
+#: includes/class-wc-gateway-paycrypto-me.php:195
+msgid "Payment method name displayed on Checkout page."
+msgstr "Nom du mode de paiement affiché sur la page de paiement."
+
+#: includes/class-wc-gateway-paycrypto-me.php:199
+msgid "Description"
+msgstr "Description"
+
+#: includes/class-wc-gateway-paycrypto-me.php:201
+msgid "Payment method description displayed on Checkout page."
+msgstr "Description du mode de paiement affichée sur la page de paiement."
+
+#: includes/class-wc-gateway-paycrypto-me.php:202
+msgid ""
+"Pay directly from your Bitcoin wallet. Place your order to view the QR code "
+"and payment instructions."
+msgstr "Payez directement depuis votre portefeuille Bitcoin. Passez votre commande pour voir le code QR et les instructions de paiement."
+
+#: includes/class-wc-gateway-paycrypto-me.php:206
+msgid "Network"
+msgstr "Réseau"
+
+#: includes/class-wc-gateway-paycrypto-me.php:209
+msgid "Select the network for payments."
+msgstr "Sélectionnez le réseau pour les paiements."
+
+#: includes/class-wc-gateway-paycrypto-me.php:215
+msgid "Network Identifier"
+msgstr "Identifiant du réseau"
+
+#: includes/class-wc-gateway-paycrypto-me.php:219
+msgid ""
+"Tip: It is always preferable to use the wallet xPub rather than a wallet "
+"address for Bitcoin payments."
+msgstr "Astuce : Il est toujours préférable d'utiliser le portefeuille xPub plutôt qu'une adresse de portefeuille pour les paiements Bitcoin."
+
+#: includes/class-wc-gateway-paycrypto-me.php:223
+msgid "Payment Timeout (hours)"
+msgstr "Délai d'expiration du paiement (heures)"
+
+#: includes/class-wc-gateway-paycrypto-me.php:225
+msgid ""
+"Max time (in hours) to wait to confirm payment before the order expires."
+msgstr "Temps maximum (en heures) pour attendre la confirmation du paiement avant l'expiration de la commande."
+
+#: includes/class-wc-gateway-paycrypto-me.php:230
+msgid "Payment number of confirmations"
+msgstr "Nombre de confirmations de paiement"
+
+#: includes/class-wc-gateway-paycrypto-me.php:232
+msgid ""
+"Tip: To ensure the Bitcoin payment has been made, recommended wait for 3 "
+"confirmations."
+msgstr "Astuce : Pour garantir que le paiement Bitcoin a été effectué, il est recommandé d'attendre 3 confirmations."
+
+#: includes/class-wc-gateway-paycrypto-me.php:237
+msgid "Hide for Non-Admin Users"
+msgstr "Masquer pour les utilisateurs non administrateurs"
+
+#: includes/class-wc-gateway-paycrypto-me.php:238
+msgid "Show only for administrators."
+msgstr "Afficher uniquement pour les administrateurs."
+
+#: includes/class-wc-gateway-paycrypto-me.php:241
+msgid ""
+"If enabled, only administrators will see the payment method on Checkout page."
+msgstr "Si activé, seuls les administrateurs verront le mode de paiement sur la page de paiement."
+
+#: includes/class-wc-gateway-paycrypto-me.php:244
+msgid "Debug"
+msgstr "Débogage"
+
+#: includes/class-wc-gateway-paycrypto-me.php:245
+msgid "Enable debugging messages"
+msgstr "Activer les messages de débogage"
+
+#: includes/class-wc-gateway-paycrypto-me.php:248
+msgid "Debug logs will be saved to WooCommerce > Status > Logs."
+msgstr "Les journaux de débogage seront enregistrés dans WooCommerce > Statut > Journaux."
+
+#: includes/class-wc-gateway-paycrypto-me.php:252
+msgid "Danger Area"
+msgstr "Zone de danger"
+
+#: includes/class-wc-gateway-paycrypto-me.php:255
+msgid ""
+"Resetting the payment derivation index will lead to the reuse of addresses "
+"and loss of past data. Proceed with caution and ensure you understand the "
+"implications."
+msgstr "Réinitialiser l'index de dérivation des paiements entraînera la réutilisation des adresses et la perte des données passées. Procédez avec prudence et assurez-vous de comprendre les implications."
+
+#: includes/class-wc-gateway-paycrypto-me.php:263
+msgid "Support the development!"
+msgstr "Soutenez le développement !"
+
+#: includes/class-wc-gateway-paycrypto-me.php:321
+msgid "On-Chain"
+msgstr "Sur la chaîne"
+
+#: includes/processors/class-bitcoin-payment-processor.php:87
+#, php-format
+msgid "Payment sent to %1$s, Order Reference #%2$s"
+msgstr "Paiement envoyé à %1$s, Référence de commande #%2$s"
+
+#: templates/order-details/paycrypto-me-order-details.php:8
+msgid "Payment Details"
+msgstr "Détails du paiement"
+
+#: templates/order-details/paycrypto-me-order-details.php:12
+msgid "Fiat Amount:"
+msgstr "Montant en Fiat :"
+
+#: templates/order-details/paycrypto-me-order-details.php:20
+msgid "Crypto Amount:"
+msgstr "Montant en Crypto :"
+
+#: templates/order-details/paycrypto-me-order-details.php:29
+msgid "Crypto Network:"
+msgstr "Réseau Crypto :"
+
+#: templates/order-details/paycrypto-me-order-details.php:41
+msgid "Scan QR Code to Pay:"
+msgstr "Scannez le code QR pour payer :"
+
+#: templates/order-details/paycrypto-me-order-details.php:45
+msgid "QR Code for Payment"
+msgstr "Code QR pour le paiement"
+
+#: templates/order-details/paycrypto-me-order-details.php:53
+msgid "Payment address copied to clipboard."
+msgstr "Adresse de paiement copiée dans le presse-papiers."
+
+#: templates/order-details/paycrypto-me-order-details.php:63
+msgid "open your wallet app"
+msgstr "ouvrez votre application de portefeuille"

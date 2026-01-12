@@ -106,3 +106,6 @@ wp-content/wp-cache-config.php
 
 # Development and testing
 debug-paycrypto.php
+releases/*
+!releases/.gitkeep
+tests/
