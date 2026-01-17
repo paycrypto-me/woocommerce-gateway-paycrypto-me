@@ -7,6 +7,8 @@
  * Requires at least: 5.0
  * Tested up to: 6.9
  * Requires PHP: 7.4
+ * Contributors: lucasrosa95
+ * Donate link: https://gravatar.com/lucasrosa95
  * Author: PayCrypto.Me
  * Author URI: https://paycrypto.me/
  * Text Domain: woocommerce-gateway-paycrypto-me

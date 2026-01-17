@@ -1,17 +1,15 @@
-
 === PayCrypto.Me for WooCommerce ===
-
-PayCrypto.Me Payments for WooCommerce offers a complete solution that allows your customers to pay using many cryptocurrencies in your store.
-
-Contributors: paycrypto-me
+Contributors: lucasrosa95
+Tags: woocommerce, payments, crypto, bitcoin, cryptocurrencies
 Donate link: https://paycrypto.me/
-Tags: woocommerce, payments, cryptocurrency, bitcoin, lightning, crypto, gateway, paycrypto
 Requires at least: 5.0
 Tested up to: 6.9
 Stable tag: 0.1.0
 Requires PHP: 7.4
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+Accept Bitcoin and many cryptocurrencies payments in WooCommerce — a non-custodial, international-ready gateway.
 
 == Description ==
 
@@ -31,22 +29,22 @@ Key features:
 1. Upload the plugin folder to /wp-content/plugins/ or install via your deployment workflow.
 2. Activate the plugin via the WordPress Plugins screen.
 3. Go to WooCommerce → Settings → Payments and enable "PayCrypto.Me".
-4. Configure your wallet (xPub / on-chain address / Lightning) and options (timeout, confirmations, network).
-5. Testing: enable testnet mode in settings and create a test order. Ensure your webhook/callback endpoint is reachable.
+4. Configure your wallet and options (timeout, confirmations, network).
+5. Testing: enable testnet mode in settings and create a test order.
 
 Notes:
-- Callback URL pattern: (ex.) `https://yourstore.com/?wc-api=paycrypto_me&action=callback` — confirm in gateway settings.
 - For troubleshooting enable WooCommerce logs (WooCommerce → Status → Logs) and select `paycrypto_me`.
+- The plugin is not responsible for the data provided or who accesses it. All responsibility lies with the website administrator.
+- At the moment, the plugin supports only Bitcoin transactions. Support for other cryptocurrencies may be added in future plugin updates.
+- The plugin currently does not manage transaction confirmations. This feature may be included in future updates.
 
 == Screenshots ==
 
-1. Plugin settings page (network selection, xPub/lightning address, timeout, confirmations) — source/assets/screenshot-1.jpg
-2. Checkout page with PayCrypto.Me option and QR code — source/assets/screenshot-2.jpg
-3. Order details page showing payment status and QR code — source/assets/screenshot-3.jpg
-4. Admin order details with payment metadata — source/assets/screenshot-4.jpg
-5. Order details (alternate/mobile view) — source/assets/screenshot-5.jpg
-6. Plugin banner (large) — source/assets/banner-1544x500.png
-7. Plugin banner (small) — source/assets/banner-772x250.png
+1. Checkout page with PayCrypto.Me option - ../assets/screenshot-1.jpg
+2. Order details page showing payment details and payment QR code - ../assets/screenshot-2.jpg
+3. Admin panel order details page showing payment details and payment QR code - ../assets/screenshot-3.jpg
+4. Woocommerce Payment Settings listing PayCrypto.Me option - ../assets/screenshot-4.jpg
+5. Admin panel PayCrypto.Me plugin settings page - ../assets/screenshot-5.jpg
 
 == Frequently Asked Questions ==
 
