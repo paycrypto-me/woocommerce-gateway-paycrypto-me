@@ -41,8 +41,8 @@ if ($paycrypto_me_payment_address): ?>
                     style="font-weight: 700;"><?php esc_html_e('Scan QR Code to Pay:', 'woocommerce-gateway-paycrypto-me'); ?></small>
             </div>
             <div class="paycrypto-me-order-details__qr-code-image">
-                <img src="<?php echo $paycrypto_me_payment_qr_code ?>"
-                    alt="<?php esc_attr_e('QR Code for Payment', 'woocommerce-gateway-paycrypto-me'); ?>" />
+                <img src="<?php echo esc_url( $paycrypto_me_payment_qr_code ); ?>"
+                    alt="<?php esc_attr_e( 'QR Code for Payment', 'woocommerce-gateway-paycrypto-me' ); ?>" />
             </div>
             <div class="paycrypto-me-order-details__wrapper paycrypto-me-order-details__wrapper--address">
                 <small
@@ -59,7 +59,7 @@ if ($paycrypto_me_payment_address): ?>
 
             <a class="woocommerce-button wp-element-button paycrypto-me-order-details__button paycrypto-me-order-details__open-wallet-button"
                 class="woocommerce-button wp-element-button paycrypto-me-order-details__button paycrypto-me-order-details__open-wallet-button"
-                href="<?php echo $paycrypto_me_payment_uri ?>" target="_blank" rel="noopener noreferrer">
+                href="<?php echo esc_url( $paycrypto_me_payment_uri ); ?>" target="_blank" rel="noopener noreferrer">
                 <?php esc_html_e('open your wallet app', 'woocommerce-gateway-paycrypto-me'); ?>
             </a>
         </div>

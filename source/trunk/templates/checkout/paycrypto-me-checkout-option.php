@@ -4,5 +4,5 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<p><?= $description ?></p>
-<input type="hidden" name="paycrypto_me_crypto_currency" value="<?= $crypto_currency ?>">
+<p><?php echo esc_html( $description ); ?></p>
+<input type="hidden" name="paycrypto_me_crypto_currency" value="<?php echo esc_attr( $crypto_currency ); ?>">

@@ -86,28 +86,33 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
     public function process_admin_options()
     {
         if (isset($_POST['paycrypto_me_nonce'])) {
-            if (!wp_verify_nonce($_POST['paycrypto_me_nonce'], 'paycrypto_me_settings')) {
-                wp_die(__('Security check failed', 'woocommerce-gateway-paycrypto-me'));
+            $nonce = wp_unslash( $_POST['paycrypto_me_nonce'] );
+            if ( ! wp_verify_nonce( $nonce, 'paycrypto_me_settings' ) ) {
+                wp_die( esc_html__( 'Security check failed', 'woocommerce-gateway-paycrypto-me' ) );
             }
-        } else if (!isset($_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'woocommerce-settings')) {
-            wp_die(__('Security check failed', 'woocommerce-gateway-paycrypto-me'));
+        } else {
+            $wpnonce = isset( $_POST['_wpnonce'] ) ? wp_unslash( $_POST['_wpnonce'] ) : '';
+            if ( ! wp_verify_nonce( $wpnonce, 'woocommerce-settings' ) ) {
+                wp_die( esc_html__( 'Security check failed', 'woocommerce-gateway-paycrypto-me' ) );
+            }
         }
 
-        $selected_network = isset($_POST['woocommerce_paycrypto_me_selected_network']) ? sanitize_text_field($_POST['woocommerce_paycrypto_me_selected_network']) : null;
-        $network_identifier = isset($_POST['woocommerce_paycrypto_me_network_identifier']) ? sanitize_text_field($_POST['woocommerce_paycrypto_me_network_identifier']) : '';
+        $selected_network = isset( $_POST['woocommerce_paycrypto_me_selected_network'] ) ? sanitize_text_field( wp_unslash( $_POST['woocommerce_paycrypto_me_selected_network'] ) ) : null;
+        $network_identifier = isset( $_POST['woocommerce_paycrypto_me_network_identifier'] ) ? sanitize_text_field( wp_unslash( $_POST['woocommerce_paycrypto_me_network_identifier'] ) ) : '';
         $network_config = $this->get_network_config($selected_network);
 
         if (empty($network_identifier)) {
             // translators: %s is the field label being validated, e.g. "Wallet xPub".
             \WC_Admin_Settings::add_error(
-                sprintf(__('Please enter a valid %s.', 'woocommerce-gateway-paycrypto-me'), $network_config['field_label'])
+                sprintf( esc_html__( 'Please enter a valid %s.', 'woocommerce-gateway-paycrypto-me' ), esc_html( $network_config['field_label'] ) )
             );
             return false;
         }
 
         if (!$this->validate_network_identifier($selected_network, $network_identifier)) {
+            // translators: %s is the field label being validated, e.g. "Wallet xPub".
             \WC_Admin_Settings::add_error(
-                sprintf(__('The %s provided is not valid for the selected network.', 'woocommerce-gateway-paycrypto-me'), $network_config['field_label'])
+                sprintf( esc_html__( 'The %s provided is not valid for the selected network.', 'woocommerce-gateway-paycrypto-me' ), esc_html( $network_config['field_label'] ) )
             );
             return false;
         }
@@ -136,15 +141,15 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
                 'field_label' => __('Testnet Wallet xPub', 'woocommerce-gateway-paycrypto-me'),
                 'field_placeholder' => 'e.g., tpub6, upub6, vpub6...',
             ),
-            'lightning' => array(
-                'name' => 'Lightning Network',
-                'address_prefix' => array('lnbc', 'lntb', 'lnbcrt'),
-                'xpub_prefix' => array(),
-                'testnet' => false,
-                'field_type' => 'email',
-                'field_label' => __('Lightning Address', 'woocommerce-gateway-paycrypto-me'),
-                'field_placeholder' => 'e.g., payments@yourstore.com',
-            ),
+            // 'lightning' => array(
+            //     'name' => 'Lightning Network',
+            //     'address_prefix' => array('lnbc', 'lntb', 'lnbcrt'),
+            //     'xpub_prefix' => array(),
+            //     'testnet' => false,
+            //     'field_type' => 'email',
+            //     'field_label' => __('Lightning Address', 'woocommerce-gateway-paycrypto-me'),
+            //     'field_placeholder' => 'e.g., payments@yourstore.com',
+            // ),
         );
     }
 
@@ -355,7 +360,7 @@ class WC_Gateway_PayCryptoMe extends \WC_Payment_Gateway
         $html = str_replace('</table>', $nonce_field . '</table>', $html);
 
         if ($echo) {
-            echo $html;
+            echo wp_kses_post( $html );
         }
 
         return $html;
