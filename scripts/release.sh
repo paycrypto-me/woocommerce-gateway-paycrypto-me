@@ -110,26 +110,16 @@ if [[ -f "$README_FILE.bak" ]]; then
   rm -f "$README_FILE.bak" || true
 fi
 
-# Try update composer.json and package.json: prefer jq, fallback to sed
-if command -v jq >/dev/null 2>&1; then
-  for f in "$TRUNK/composer.json" "$TRUNK/package.json"; do
-    if [[ -f "$f" ]]; then
-      echo "Updating version in $f using jq"
-      tmp=$(mktemp)
-      jq --arg v "$VERSION" '.version=$v' "$f" > "$tmp" && mv "$tmp" "$f"
-    fi
-  done
-else
-  echo "jq not found, attempting safe sed replacements for JSON files"
-  for f in "$TRUNK/composer.json" "$TRUNK/package.json"; do
-    if [[ -f "$f" ]]; then
-      echo "Updating version in $f using sed"
-      # Replace the value of the top-level "version" property. Keeps trailing comma if present.
-      sed -E -i.bak 's/("version"[[:space:]]*:[[:space:]]*")([^"]+)("[[:space:]]*,?)/\1'"$VERSION"'\3/' "$f" || true
-      rm -f "$f.bak" || true
-    fi
-  done
-fi
+# Update composer.json and package.json by replacing the "version" line in-place
+# Use a line-based sed replacement to preserve existing whitespace and formatting
+for f in "$TRUNK/composer.json" "$TRUNK/package.json"; do
+  if [[ -f "$f" ]]; then
+    echo "Updating version in $f (preserve formatting)"
+    # Replace the value of the top-level "version" property on its line only.
+    sed -E -i.bak 's/^([[:space:]]*"version"[[:space:]]*:[[:space:]]*")[^"]+("[[:space:]]*,?)/\1'"$VERSION"'\2/' "$f" || true
+    rm -f "$f.bak" || true
+  fi
+done
 
 # Update JS source header @version if present
 JS_FILE="$TRUNK/src/paycrypto-me-script.js"
@@ -175,6 +165,42 @@ rm -f "$BUILD_DIR/$SLUG/phpunit.xml.dist"
 # Remove any backup files (e.g. PO backups ending with ~)
 find "$BUILD_DIR/$SLUG" -name '*~' -type f -print -delete || true
 find "$BUILD_DIR/$SLUG" -name '*.po~' -type f -print -delete || true
+
+# Clean vendor directory: remove VCS metadata, phpunit files and tests directories
+if [[ -d "$BUILD_DIR/$SLUG/vendor" ]]; then
+  echo "Cleaning vendor: removing VCS metadata, phpunit files and tests directories"
+  # Remove .git directories and other VCS files
+  find "$BUILD_DIR/$SLUG/vendor" -type d -name '.git' -prune -exec rm -rf {} + || true
+  find "$BUILD_DIR/$SLUG/vendor" -type f -name '.git*' -delete || true
+  find "$BUILD_DIR/$SLUG/vendor" -type f -name '.gitignore' -delete || true
+  # Remove phpunit configuration/related files
+  find "$BUILD_DIR/$SLUG/vendor" -type f -iname 'phpunit.xml*' -delete || true
+  # Remove common CI/config files
+  find "$BUILD_DIR/$SLUG/vendor" -type f -iname '.travis.yml' -delete || true
+  find "$BUILD_DIR/$SLUG/vendor" -type d -name '.github' -prune -exec rm -rf {} + || true
+  # Remove tests folders inside vendor packages
+  find "$BUILD_DIR/$SLUG/vendor" -type d \( -iname 'tests' -o -iname 'test' -o -iname 'Tests' \) -prune -exec rm -rf {} + || true
+  # Remove heavy font files and unrelated images from endroid QR code assets
+  if [[ -d "$BUILD_DIR/$SLUG/vendor/endroid/qr-code/assets" ]]; then
+    echo "Removing heavy fonts and unrelated images from endroid/qr-code/assets"
+    find "$BUILD_DIR/$SLUG/vendor/endroid/qr-code/assets" -type f \( -iname '*.ttf' -o -iname '*.otf' -o -iname 'blackfire.png' \) -print -delete || true
+  fi
+  # Remove example/exampleS directories from vendor packages
+  find "$BUILD_DIR/$SLUG/vendor" -type d \( -iname 'examples' -o -iname 'example' -o -iname 'Examples' \) -prune -exec rm -rf {} + || true
+fi
+
+# Further prune common non-runtime files from vendor to reduce package size
+if [[ -d "$BUILD_DIR/$SLUG/vendor" ]]; then
+  echo "Pruning documentation, build and binary files from vendor"
+  # Remove license files, markdown docs, CI configs, shell scripts, XML, neon, yaml
+  find "$BUILD_DIR/$SLUG/vendor" -type f \( -iname 'license' -o -iname 'license.*' -o -iname '*.md' -o -iname '*.markdown' -o -iname '*.yml' -o -iname '*.yaml' -o -iname '*.sh' -o -iname '*.neon' -o -iname '*.xml' -o -iname 'Makefile' \) -delete || true
+  # Remove bin directories from vendor packages
+  find "$BUILD_DIR/$SLUG/vendor" -type d -name 'bin' -prune -exec rm -rf {} + || true
+fi
+
+# Remove root-level non-distributable files/dirs from package
+rm -f "$BUILD_DIR/$SLUG/LICENSE" || true
+rm -rf "$BUILD_DIR/$SLUG/examples" || true
 
 if [[ $DO_ZIP -eq 1 ]]; then
   mkdir -p "$ROOT_DIR/releases"
