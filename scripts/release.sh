@@ -54,7 +54,17 @@ if [[ -z "$VERSION" || -z "$SLUG" ]]; then
 fi
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-TRUNK="$ROOT_DIR/source/trunk"
+# Support repositories using either `src/trunk` (this repo) or `source/trunk` (other layouts).
+if [[ -d "$ROOT_DIR/src/trunk" ]]; then
+  TRUNK="$ROOT_DIR/src/trunk"
+elif [[ -d "$ROOT_DIR/source/trunk" ]]; then
+  TRUNK="$ROOT_DIR/source/trunk"
+else
+  # fallback to original path (will likely fail later with descriptive error)
+  TRUNK="$ROOT_DIR/source/trunk"
+fi
+
+echo "Using trunk path: $TRUNK"
 
 echo "Preparing release $SLUG v$VERSION"
 
@@ -82,13 +92,22 @@ README_FILE="$TRUNK/readme.txt"
 
 if [[ -f "$PLUGIN_FILE" ]]; then
   echo "Updating Version: header in $PLUGIN_FILE"
-  # Replace the first occurrence of "Version: ..."
-  sed -E -i.bak "0,/Version:[[:space:]]*/s//Version: $VERSION/" "$PLUGIN_FILE" || true
+  # Replace the line that contains the Version header inside the plugin file comment block.
+  # Match lines like: " * Version: ..." and replace the value only.
+  sed -E -i.bak "s/^(\\s*\\*\\s*Version:[[:space:]]*).*/\\1$VERSION/" "$PLUGIN_FILE" || true
 fi
 
 if [[ -f "$README_FILE" ]]; then
   echo "Updating Stable tag in $README_FILE"
   sed -E -i.bak "s/^(Stable tag:[[:space:]]*).*/\1$VERSION/" "$README_FILE" || true
+fi
+
+# Clean up sed backup files created by -i.bak
+if [[ -f "$PLUGIN_FILE.bak" ]]; then
+  rm -f "$PLUGIN_FILE.bak" || true
+fi
+if [[ -f "$README_FILE.bak" ]]; then
+  rm -f "$README_FILE.bak" || true
 fi
 
 # Try update composer.json and package.json if jq is available
