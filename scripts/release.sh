@@ -110,17 +110,41 @@ if [[ -f "$README_FILE.bak" ]]; then
   rm -f "$README_FILE.bak" || true
 fi
 
-# Try update composer.json and package.json if jq is available
+# Try update composer.json and package.json: prefer jq, fallback to sed
 if command -v jq >/dev/null 2>&1; then
   for f in "$TRUNK/composer.json" "$TRUNK/package.json"; do
     if [[ -f "$f" ]]; then
-      echo "Updating version in $f"
+      echo "Updating version in $f using jq"
       tmp=$(mktemp)
       jq --arg v "$VERSION" '.version=$v' "$f" > "$tmp" && mv "$tmp" "$f"
     fi
   done
 else
-  echo "jq not found, skipping composer.json/package.json version updates (install jq to enable)"
+  echo "jq not found, attempting safe sed replacements for JSON files"
+  for f in "$TRUNK/composer.json" "$TRUNK/package.json"; do
+    if [[ -f "$f" ]]; then
+      echo "Updating version in $f using sed"
+      # Replace the value of the top-level "version" property. Keeps trailing comma if present.
+      sed -E -i.bak 's/("version"[[:space:]]*:[[:space:]]*")([^"]+)("[[:space:]]*,?)/\1'"$VERSION"'\3/' "$f" || true
+      rm -f "$f.bak" || true
+    fi
+  done
+fi
+
+# Update JS source header @version if present
+JS_FILE="$TRUNK/src/paycrypto-me-script.js"
+if [[ -f "$JS_FILE" ]]; then
+  echo "Updating @version in $JS_FILE"
+  # Replace the @version line in the leading comment block
+  sed -E -i.bak "s/^([[:space:]]*\*[[:space:]]*@version[[:space:]]+).*/\\1$VERSION/" "$JS_FILE" || true
+  rm -f "$JS_FILE.bak" || true
+fi
+
+# Update PHP class constant VERSION inside the main plugin file if present
+if [[ -f "$PLUGIN_FILE" ]]; then
+  echo "Updating WC_PayCryptoMe::VERSION constant in $PLUGIN_FILE"
+  sed -E -i.bak "s/^(\s*public\s+const\s+string\s+VERSION\s*=\s*')[^']+('\s*;)/\\1$VERSION\\2/" "$PLUGIN_FILE" || true
+  rm -f "$PLUGIN_FILE.bak" || true
 fi
 
 BUILD_DIR=$(mktemp -d -t ${SLUG}-release-XXXX)
