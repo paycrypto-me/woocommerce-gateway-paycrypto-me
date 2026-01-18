@@ -77,7 +77,7 @@ if [[ $DO_TESTS -eq 1 ]]; then
 fi
 
 # Update version in plugin header and readme
-PLUGIN_FILE="$TRUNK/woocommerce-gateway-paycrypto-me.php"
+PLUGIN_FILE="$TRUNK/paycrypto-me-for-woocommerce.php"
 README_FILE="$TRUNK/readme.txt"
 
 if [[ -f "$PLUGIN_FILE" ]]; then

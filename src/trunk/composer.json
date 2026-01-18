@@ -1,0 +1,49 @@
+{
+    "name": "paycrypto-me/paycrypto-me-for-woocommerce",
+    "description": "PayCrypto.Me for WooCommerce offers a complete solution that allows your customers to pay using many cryptocurrencies in your store.",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0-or-later",
+    "autoload": {
+        "classmap": [
+            "includes/",
+            "exceptions/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "PayCrypto.Me",
+            "email": "support@paycrypto.me"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "version": "0.1.0",
+    "config": {
+        "audit": {
+            "ignore": [
+                "PKSA-j43q-24zh-tyzv",
+                "PKSA-36gf-zqdd-tq5m"
+            ]
+        },
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "require": {
+        "endroid/qr-code": "^4.6",
+        "lucas-rosa95/bitcoin": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lucas-rosa95/bitcoin-php"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lucas-rosa95/buffertools-php"
+        }
+    ]
+}

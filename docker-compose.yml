@@ -21,7 +21,7 @@ services:
       - wp_db
     volumes:
       - wordpress:/var/www/html
-      - ./source/trunk:/var/www/html/wp-content/plugins/woocommerce-gateway-paycrypto-me
+      - ./src/trunk:/var/www/html/wp-content/plugins/paycrypto-me-for-woocommerce
     networks:
       - wp_network
 
